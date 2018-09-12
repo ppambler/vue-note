@@ -177,9 +177,66 @@ vm.$watch('a', function (newValue, oldValue) {
 
 ## ★实例生命周期钩子
 
+### ◇你说一个Vue实例在创建的过程中发生了什么？
 
+> 每个 Vue 实例在被创建时都要经过**一系列的初始化过程—**—例如，需要设置数据监听、编译模板、将实例挂载到 DOM 并在数据变化时更新 DOM 等。同时在**这个过程中也会运行**一些叫做**生命周期钩子**的函数，这给了**用户**在不同阶段添加**自己的代码**的机会。
+
+### ◇举个例子？
+
+[`created`](https://cn.vuejs.org/v2/api/#created) 钩子可以用来在一个实例被创建之后执行代码，**✎：**
+
+```js
+new Vue({
+  data: {
+    a: 1
+  },
+  created: function () {
+    // `this` 指向 vm 实例
+    console.log('Vue实例被创建后就执行')
+    console.log('a is: ' + this.a)
+  }
+})
+// => "a is: 1"
+```
+
+也有一些其它的钩子，在实例生命周期的不同阶段被调用，如 [`mounted`](https://cn.vuejs.org/v2/api/#mounted)、[`updated`](https://cn.vuejs.org/v2/api/#updated) 和 [`destroyed`](https://cn.vuejs.org/v2/api/#destroyed)。生命周期钩子的 `this` 上下文指向调用它的 Vue 实例。
+
+看来实例的生命周期与钩子紧密相连，毕竟可以让用户添加自己的demo！
+
+### ◇一个注意事项？
+
+> 不要在选项属性或回调上使用[箭头函数](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/Arrow_functions)，比如 `created: () => console.log(this.a)` 或 `vm.$watch('a', newValue => this.myMethod())`。因为箭头函数是和父级上下文绑定在一起的，`this` 不会是如你所预期的 Vue 实例，经常导致 `Uncaught TypeError: Cannot read property of undefined` 或 `Uncaught TypeError: this.myMethod is not a function` 之类的错误。
+
+我的天，这会儿就叫选项属性了！反正这些都是些可选的属性，话说我可以直接`new Vue()`吗？
+
+可以，反正都叫选项对象了！这个对象就是可选的哈！老实说，我真想把这个选项对象叫「有很多选项属性的对象」！就像是我可以选A、选B、选C……
+
+## ★生命周期图示
+
+> 下图展示了实例的生命周期。你**不需要立马弄明白**所有的东西，不过随着你的**不断学习和使用**，**它的参考价值会越来越高。**
+
+之前有了解过，计算机语言作为程序员控制一台计算机工作的协议，具备了协议的三要素，**✎：**
+
+- 语法
+- 语义
+- 顺序
+
+为此，我可以从这个方面去了解这个生命周期，一个Vue实例的生命周期就是一个规定好的协议，它有着语法、语义、顺序，我们可以根据这个周期的顺序添加一些demo，让我们的Vue实例更强大！
+
+话说这个`created`钩子函数，是在初始化后就执行吗？
+
+![](https://cn.vuejs.org/images/lifecycle.png)
 
 ## ★小结
+
+- 你需要知道一个Vue实例是如何创建的
+- 你需要知道根Vue实例和组件Vue实例的区别
+- 你需要知道选项属性data与视图关系
+- 你需要知道有个叫Object.freeze()的家伙可以冻住你的data，让data和视图失去联系！
+- 你需要知道为什么Vue实例会有 `$`开头的实例属性与方法
+- 生命周期钩子函数——给了用户在不同阶段添加自己的代码的机会
+- 如何理解Vue实例生命周期图示？
+- 如何在Vue实例的某个生命阶段中用上合适的钩子？
 
 ## ★Q&A
 
